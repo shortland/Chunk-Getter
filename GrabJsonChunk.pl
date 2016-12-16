@@ -8,10 +8,11 @@ use File::Slurp;
 
 $datas = read_file("main.txt");
 
-# start at 1, not 0.
-$chunkToGet = 2;
+$errorText = "An Error Occured, possibly out of bounds.";
 
-print "The word at position " . $chunkToGet . " is: '" . slicer($datas, $chunkToGet) . "'\n";
+for($l = 1; $l < lengthOfData($datas); $l++) {
+	print "The string at position " . $l . " is: '" . slicer($datas, $l) . "'\n";
+}
 
 sub slicer {
 	my ($data, $amt) = @_;
@@ -56,5 +57,16 @@ sub slicer {
 			}
 		}
 	}
-	return "An Error Occured, possibly out of bounds.\n";
+	return $errorText;
+}
+
+sub lengthOfData {
+	my ($data) = @_;
+
+	for($k = 1; $k < length($datas); $k++) {
+		if(slicer($datas, $k) =~ /^($errorText)$/) {
+			return $k;
+			last;
+		}
+	}
 }
